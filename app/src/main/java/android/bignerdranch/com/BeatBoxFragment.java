@@ -11,11 +11,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SeekBar;
 
 import java.util.List;
 
 public class BeatBoxFragment extends Fragment {
     private BeatBox mBeatBox;
+    private FragmentBeatboxBinding mBinding;
 
     public static BeatBoxFragment newInstance() {
         return new BeatBoxFragment();
@@ -30,18 +32,45 @@ public class BeatBoxFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedState) {
-        FragmentBeatboxBinding binding = DataBindingUtil
+        mBinding = DataBindingUtil
                 .inflate(inflater, R.layout.fragment_beatbox, container, false);
 
-        binding.recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
-        binding.recyclerView.setAdapter(new SoundAdapter(mBeatBox.getSounds()));
-        return binding.getRoot();
+        mBinding.recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        mBinding.recyclerView.setAdapter(new SoundAdapter(mBeatBox.getSounds()));
+
+        mBinding.seekBar.setMax(200);
+        if (savedState == null) mBinding.seekBar.setProgress(100);
+        mBinding.seekBarText.setText(getString(R.string.playback_speed, mBeatBox.getPlaybackSpeed()));
+        mBinding.seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int speed, boolean fromUser) {
+                if (speed < 100) speed = 50 + (speed/2);
+
+                mBeatBox.setPlaySpeed(speed * 0.01f);
+                mBinding.seekBarText.setText(getString(R.string.playback_speed,
+                        speed));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        return mBinding.getRoot();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         mBeatBox.release();
+    }
+
+    private void updateSeekbar(FragmentBeatboxBinding binding) {
     }
 
     private class SoundAdapter extends RecyclerView.Adapter<SoundHolder> {
