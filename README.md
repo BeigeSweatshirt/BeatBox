@@ -1,5 +1,5 @@
 # BeatBox 
-BeatBox is not an application for creating musical beats. BeatBox is a soundboard that makes various, threating hollers and roars to intimidate your foes should you need to beat them up : ). BeatBox is based on Android Programming: The Big Nerd Ranch Guide and the challenge exercises therein.
+BeatBox is not an application for creating musical beats. BeatBox is a soundboard that makes various, threating hollers and roars to intimidate your foes should you need to beat them up : ). BeatBox is based on Android Programming: The Big Nerd Ranch Guide. The main branch is the base app, challenge exercises are implemented in the branches.
 
 ## What I Learned About
 - The Model-View-ViewModel (MVVM) architecure and its advantages of MVC
